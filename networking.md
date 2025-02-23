@@ -23,7 +23,13 @@ Set network connection profile to private
 Set-NetConnectionProfile -InterfaceIndex <Index goes here> -NetworkCategory Private
 ```
 
-Set DNS
+Set primary DNS
 ```powershell
 Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter -Name 'Ethernet' | Select-Object -ExpandProperty 'ifIndex') -ServerAddresses 10.200.35.101
 ```
+
+Set primary and secondary DNS
+```powershell
+ Get-NetAdapter  
+ Set-DnsClientServerAddress -InterfaceIndex <Interface Number> -ServerAddresses ("1.1.1.1","9.9.9.9")  
+ ```

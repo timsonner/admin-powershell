@@ -145,3 +145,18 @@ $neverLoggedInUsers = $users | Where-Object { $_.LastLogonTimestamp -eq $null -a
 
 $neverLoggedInUsers | Format-Table -AutoSize
 ```
+
+Find Keroastable acounts
+```powershell
+Get-ADUser -Filter { ServicePrincipalName -ne "$null" } -Properties ServicePrincipalName | Select-Object SamAccountName, ServicePrincipalName
+```
+
+Get user object descriptions
+```powershell
+Get-ADUser -Filter * -Properties Description | Select-Object SamAccountName, Description
+```
+
+Get domain admins
+```powershell
+Get-ADGroupMember -Identity "Domain Admins" -Recursive | Select-Object SamAccountName
+```

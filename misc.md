@@ -101,3 +101,28 @@ Get local file ACL
 $FolderACL = Get-Acl -Path "C:\Windows\"
 $FolderACL.Access | Format-Table IdentityReference, FileSystemRights
 ```
+
+Join workstation to domain
+```powershell
+ Add-Computer -DomainName <domain name>
+ ```
+
+Get current domain - Windows
+```powershell
+(Get-WmiObject Win32_ComputerSystem).Domain
+```
+
+Windows key from Registry - Windows 11
+```powershell
+    Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ClipSVC\"
+```
+
+Windows key from Registry - Windows 10  
+ ```powershell
+    Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform"
+```
+
+Get location of process
+```powershell
+Get-Process -Id 11076 | Select-Object -ExpandProperty Path
+```
