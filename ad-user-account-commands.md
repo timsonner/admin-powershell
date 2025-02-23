@@ -85,7 +85,7 @@ Set-ADAccountPassword -Identity (Read-Host "Username") -NewPassword (Read-Host "
 Force password change at logon
 ```powershell
 Set-ADUser -Identity (Read-Host "Username") -ChangePasswordAtLogon $true 
-``
+```
 
 AD Sync  
 ```powershell
