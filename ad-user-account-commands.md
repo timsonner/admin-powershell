@@ -1,3 +1,14 @@
+### Get AD user by SID
+```powershell
+$sid = "<SID goes here>"
+Get-ADUser -Filter {ObjectSID -eq $sid}
+```
+
+### New-AdUser  
+```powershell
+New-ADUser -Name (Read-Host "Full Name") -GivenName (Read-Host "First name") -Surname (Read-Host "Last name") -SamAccountName (Read-Host "Username") -AccountPassword (Read-Host -AsSecureString "Enter Password") -Enabled $true
+```
+
 Set account expiration date  
 ```powershell
 $currentDate = (Get-Date)
@@ -104,7 +115,7 @@ Set-ADUser -Identity "username" -LogonWorkstations "PC1,PC2"
 
 Create new domain user
 ```powershell
-New-ADUser -Name "John Smith" -SamAccountName JSmith -UserPrincipalName "jsmith@tryhackme.loc" -GivenName "John" -Surname "Smith" -Enabled $true -AccountPassword (Read-Host "password" -AsSecureString) -Path "CN=Users,DC=tryhackme,DC=loc" -EmailAddress "jsmith@tryhackme.loc"
+New-ADUser -Name "John Smith" -SamAccountName JSmith -UserPrincipalName "jsmith@contoso.loc" -GivenName "John" -Surname "Smith" -Enabled $true -AccountPassword (Read-Host "password" -AsSecureString) -Path "CN=Users,DC=contoso,DC=loc" -EmailAddress "jsmith@contoso.loc"
 ```
 
 Get accounts trusted to authorize for delegation 
@@ -121,7 +132,7 @@ Set the password to never expire
 Set-ADUser -Identity "UserName" -PasswordNeverExpires $true
 ```
 
-Get all enabled accounts
+### Get all enabled accounts
 ```powershell
 Get-ADUser -Filter {Enabled -eq $true}
 ```
@@ -131,12 +142,7 @@ Get locked accounts
 Search-ADAccount -LockedOut
 ```
 
-Get ad account based on SID
-```powershell
-Get-ADUser -Filter {ObjectSID -eq (Read-Host "SID")}
-```
-
-Get users never logged in
+### Get users never logged in
 ```powershell
 $users = Get-ADUser -Filter * -Properties LastLogonTimestamp,Enabled,Description |
          Select-Object Name, SamAccountName, LastLogonTimestamp, Enabled, Description
@@ -146,17 +152,17 @@ $neverLoggedInUsers = $users | Where-Object { $_.LastLogonTimestamp -eq $null -a
 $neverLoggedInUsers | Format-Table -AutoSize
 ```
 
-Find Keroastable acounts
+### Find Keroastable acounts
 ```powershell
 Get-ADUser -Filter { ServicePrincipalName -ne "$null" } -Properties ServicePrincipalName | Select-Object SamAccountName, ServicePrincipalName
 ```
 
-Get user object descriptions
+### Get user object descriptions
 ```powershell
 Get-ADUser -Filter * -Properties Description | Select-Object SamAccountName, Description
 ```
 
-Get domain admins
+### Get domain admins
 ```powershell
 Get-ADGroupMember -Identity "Domain Admins" -Recursive | Select-Object SamAccountName
 ```

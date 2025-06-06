@@ -129,3 +129,27 @@ Credential injection
 ```
 runas.exe /netonly /user:<domain>\<username> cmd.exe
 ```
+
+### DISM
+```
+DISM /Online /Cleanup-Image /RestoreHealth
+```
+
+```
+DISM /Get-WimInfo /WimFile:C:\temp\install.wim
+```
+
+Make dir and mount DISM image
+```
+mkdir C:\DISMSource
+DISM /Mount-Wim /WimFile:<path/to/>install.wim /Index:1 /MountDir:<mount path>
+```
+
+Restore from image
+```
+DISM /Online /Cleanup-Image /RestoreHealth /Source:C:\DISMSource\Windows\WinSxS /LimitAccess
+```
+
+```
+DISM /Unmount-Wim /MountDir:C:\DISMSource /Discard
+```

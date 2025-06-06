@@ -5,7 +5,7 @@ Get-NetFirewallRule | Select-Object -Property * | Export-Csv -Path "C:\<path to>
 
 Export specific firewall rules to an XML file
 ```powershell
-Get-NetFirewallRule -DisplayName "YourRuleName" | Export-Clixml -Path "C:\<path to>\FirewallRules.xml"
+Get-NetFirewallRule -DisplayName "RuleName" | Export-Clixml -Path "C:\<path to>\FirewallRules.xml"
 ```
 
 Export all firewall rules to an XML file

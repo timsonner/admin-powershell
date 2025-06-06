@@ -42,3 +42,16 @@ Get priner port of workstation
 ```powershell
 Get-PrinterPort -ComputerName some.server.contoso.local
 ```
+
+### Send output to printer
+```powershell
+"Test print" | Out-Printer -Name "HP ENVY Photo 7800 series"
+```
+
+### Clear print queue
+```powershell
+Get-Printer | ForEach-Object {
+    $printerName = $_.Name
+    Get-PrintJob -PrinterName $printerName | Remove-PrintJob
+}
+```

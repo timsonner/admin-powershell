@@ -1,3 +1,12 @@
+### Get Windows event
+```powershell
+Get-WinEvent -FilterHashtable @{LogName='Security';ID=4724} | 
+  Where-Object {$_.Properties[0].Value -eq "<USERNAME>"} | 
+  ForEach-Object { 
+    $_ | Select-Object * 
+  }
+```
+
 Get security related events  
 ```powershell
 Get-WinEvent -LogName Security -FilterXPath "*[System[(EventID=4728 or EventID=4729 or EventID=4732 or EventID=4733 or EventID=4756 or EventID=4757)]]" | Format-List -Property *
