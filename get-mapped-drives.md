@@ -1,3 +1,4 @@
+### Get mapped drives of user
 ```powershell
 $UserSID = "CHANGE_ME"
 

@@ -1,4 +1,4 @@
-Get all AD users and filter by PasswordLastSet date
+### Get all AD users and filter by PasswordLastSet date
 ```powershell
 $Days = 90
 $thresholdDate = (Get-Date).AddDays(-$Days)
@@ -8,7 +8,7 @@ Get-ADUser -Filter * -Properties PasswordLastSet | Where-Object {
 } | Select-Object Name, SamAccountName, PasswordLastSet | Format-Table -AutoSize
 ```
 
-Find accounts with passwords older than 90 days
+### Find accounts with passwords older than 90 days
 ```powershell
 $Days = 90
 $DateThreshold = (Get-Date).AddDays(-$Days)
@@ -18,7 +18,7 @@ Get-ADUser -Filter * -Properties SamAccountName, LastLogonDate, PasswordLastSet,
     Sort-Object PasswordLastSet
 ```
 
-Find account with default creds. Find accounts with passwords older than 90 days where created date and last set date are the same
+### Find account with default creds. Find accounts with passwords older than 90 days where created date and last set date are the same
 ```powershell
 $Days = 90
 $DateThreshold = (Get-Date).AddDays(-$Days)
@@ -31,7 +31,7 @@ Get-ADUser -Filter * -Properties SamAccountName, LastLogonDate, PasswordLastSet,
 # ----                    --------------       -------                ---------------
 ```
 
-Find non-service accounts with creds older than 90 days
+### Find non-service accounts with creds older than 90 days
 ```powershell
 $Days = 90
 $DateThreshold = (Get-Date).AddDays(-$Days)
@@ -44,7 +44,7 @@ Get-ADUser -Filter * -Properties SamAccountName, PasswordLastSet, Enabled, Passw
 # --------------       ---------------       --------------------
 ```
 
-Find users that havent reset password
+### Find users that havent reset password
 ```powershell
 $users = Get-ADUser -Filter * -Properties SamAccountName, pwdLastSet, Enabled, PasswordNeverExpires |
     Where-Object { 
@@ -55,7 +55,7 @@ $users = Get-ADUser -Filter * -Properties SamAccountName, pwdLastSet, Enabled, P
     Select-Object -ExpandProperty SamAccountName |
     Sort-Object
 ```
-Create array of usernames based on search criteria
+### Create array of usernames based on search criteria
 ```powershell
 $Days = 90
 $DateThreshold = (Get-Date).AddDays(-$Days)
@@ -75,7 +75,7 @@ $usersListString
 # $usersListString example: @("user1","user2")
 ```
 
-Force reset on array of usernames
+### Force reset on array of usernames
 ```powershell
 users = @(
 "user1",

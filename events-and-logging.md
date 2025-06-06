@@ -7,17 +7,17 @@ Get-WinEvent -FilterHashtable @{LogName='Security';ID=4724} |
   }
 ```
 
-Get security related events  
+### Get security related events  
 ```powershell
 Get-WinEvent -LogName Security -FilterXPath "*[System[(EventID=4728 or EventID=4729 or EventID=4732 or EventID=4733 or EventID=4756 or EventID=4757)]]" | Format-List -Property *
 ```
 
-Export event logs (.evtx format) to .txt  
+### Export event logs (.evtx format) to .txt  
 ```powershell
 Get-WinEvent -Path "C:\temp\system.evtx" | Format-Table -AutoSize | Out-String -Width 4096 | Out-File "C:\temp\eventlog.txt"
 ```
 
-Get security event based on username  
+### Get security event based on username  
 ```powershell
 Get-ADObject -Filter { ObjectSID -eq (Read-Host "SID") } -Properties Name,ObjectClass
 
@@ -30,11 +30,12 @@ Get-ADComputer -Filter * | ForEach-Object {
 }
 ```
 
+### Get event corelated to username
 ```powershell
 Get-EventLog -LogName Security -InstanceId 4624 | Where-Object { $_.Message -match (Read-Host "Username") } | Select-Object MachineName, TimeGenerated
 ```
 
-Get last logon of user
+### Get last logon of user
 ```powershell
 Get-ADComputer -Filter * | ForEach-Object {
     Get-ADUser -Filter {SamAccountName -eq (Read-Host "Username")} -Properties LastLogon | 
@@ -42,27 +43,29 @@ Get-ADComputer -Filter * | ForEach-Object {
 }
 ```
 
-Get last logon of user and timestamp
+### Get last logon of user and timestamp
 ```powershell
 Get-ADUser -Filter {SamAccountName -eq (Read-Host "Username")} -Properties LastLogon | 
 Select-Object Name, @{Name="LastLogon"; Expression={[DateTime]::FromFileTime($_.LastLogon)}}
 ```
 
-Get events based on error leve *1 being most severe
+### Get events based on error leve *1 being most severe
 ```powershell
 Get-WinEvent -FilterHashtable @{LogName='System'; Level=1,2,3} | Format-List
 ```
-Get event logs based on Event ID  e.g. 4740 - lockout
+
+### Get event logs based on Event ID  e.g. 4740 - lockout
 ```powershell
 Get-WinEvent -LogName "Application" -FilterXPath "*[System[EventID=1000]]" | Format-List TimeCreated, Message
 ```
-Get last 50 Error and Warning events
+
+### Get last 50 Error and Warning events
 ```powershell
 Get-EventLog -LogName System -EntryType Error,Warning -Newest 50 | Format-List
 Get-EventLog -LogName Application -EntryType Error,Warning -Newest 50 | Format-List
 ```
 
-Query Security log based on username and event ID
+### Query Security log based on username and event ID
 ```powershell
 $account = (Read-Host "username")
 $events = Get-EventLog -LogName Security -InstanceId 4740 | 
@@ -76,7 +79,7 @@ $events | ForEach-Object {
 }
 ```
 
-Query Security log of DC for events based on username and event ID
+### Query Security log of DC for events based on username and event ID
 ```powershell
 $account = Read-Host "Username"
 $dcs = Get-ADDomainController -Filter * | Select-Object -ExpandProperty HostName
@@ -96,7 +99,7 @@ foreach ($dc in $dcs) {
 }
 ```
 
-Search all logs for username
+### Search all logs for username
 ```powershell
 $account = Read-Host "Username"
 $logs = Get-WinEvent -ListLog *
@@ -113,7 +116,7 @@ foreach ($log in $logs) {
 }
 ```
 
-Query the specific log (Security, etc.) for events matching the username
+### Query the specific log (Security, etc.) for events matching the username
 ```powershell
 $logName = "Security"
 # $logName = "Quickpass Events"
@@ -138,7 +141,7 @@ try {
 }
 ```
 
-Query DC for all events based on event ID
+### Query DC for all events based on event ID
 ```powershell
 $pdc = (Get-ADDomain).PDCEmulator
 $filterHash = @{LogName = "Security"; Id = 4740; StartTime = (Get-Date).AddDays(-1)}
@@ -150,7 +153,7 @@ $lockoutEvents | Select @{Name = "LockedUser"; Expression = {$_.Properties[0].Va
 #  4771 (Kerberos Authentication) or event ID 4776 (NTLM authentication) before the event ID 4740 
 ```
 
-Get events by using an XPath
+### Get events by using an XPath
 ```powershell
 # Possible events: 4625, 4740
 
@@ -178,7 +181,7 @@ foreach ($event in $lockoutEvents) {
 }
 ```
 
-Get local logon events
+### Get local logon events
 ```powershell
 $LogonEvents = Get-WinEvent -FilterHashtable @{
     LogName = 'Security'

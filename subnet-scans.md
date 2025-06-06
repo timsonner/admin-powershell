@@ -57,8 +57,6 @@ $results = foreach ($ip in $ips) {
         Status = if ($ping) {"Online"} else {"Offline"}
     }
 }
-
-# Print results
 $results | Format-Table -AutoSize
 ```
 

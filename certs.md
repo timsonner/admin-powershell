@@ -33,10 +33,3 @@ public class TrustAllCertsPolicy : ICertificatePolicy {
 "@
 [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
 ```
-
-### Make request and view site
-```powershell
-$response = Invoke-WebRequest -Uri "https://192.168.1.5" -UseBasicParsing
-$response.Content
-```
-

@@ -141,3 +141,8 @@ $FolderACL.Access | Format-Table IdentityReference, FileSystemRights
 ```powershell
 Get-Process -Id 11076 | Select-Object -ExpandProperty Path
 ```
+
+### AD Sync  
+```powershell
+Start-ADSyncSyncCycle -PolicyType delta
+```

