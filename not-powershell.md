@@ -113,28 +113,29 @@ DISM /Unmount-Wim /MountDir:C:\DISMSource /Discard
 ```
 
 ### Manage Wi-Fi profiles
-#### Get connected Wi-Fi network:
+#### Manage Wi-Fi profiles
+##### Get connected Wi-Fi network:
 ```
 (netsh wlan show interfaces) -match '^\s+SSID' | ForEach-Object { $_.Trim() }
 ```
 
-#### Get info about Wi-Fi profile
+##### Get info about Wi-Fi profile
 ```
 netsh wlan show profile name="WiFiNetworkName"
 ```
-#### Set Wi-Fi profile to connect automatically
+##### Set Wi-Fi profile to connect automatically
 ```
 netsh wlan set profileparameter name="WiFiNetworkName" connectionmode=auto
 ```
-#### Get Wi-Fi interfaces
+##### Get Wi-Fi interfaces
 ```
 netsh wlan show interfaces
 ```
-#### Get Wi-Fi profiles
+##### Get Wi-Fi profiles
 ```
 netsh wlan show profiles
 ```
-#### Delete Wi-Fi profile
+##### Delete Wi-Fi profile
 ```
 netsh wlan delete profile name="XXXXXX"
 ```

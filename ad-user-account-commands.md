@@ -57,7 +57,7 @@ Get-ADUser -Filter {Enabled -eq $false} -Properties DistinguishedName | Select-O
 
 ### Move user object
 ```powershell
-$userDN = (Get-ADUser -Identity (Read-Host "Username")).DistinguishedName
+$userDN = (Get-ADUser -Identity (Read-Host "Username").DistinguishedName
 Move-ADObject -Identity $userDN -TargetPath (Read-Host "Path")
 
 Move-ADObject -Identity "CN=Tony Hawk,OU=Users,OU=Ventura,DC=SK8ORDIE,DC=local" -TargetPath "OU=Disabled Users,DC=SK8ORDIE,DC=local"
@@ -80,7 +80,7 @@ Unlock-ADAccount -Identity (Read-Host "Username")
 
 # ## Set account password
 ```powershell
-Set-ADAccountPassword -Identity (Read-Host "Username") -NewPassword (Read-Host "Enter The New Password" -AsSecureString)
+Set-ADAccountPassword -Identity (Read-Host "Username") -NewPassword (Read-Host "Enter the new password" -AsSecureString) -NewPassword (Read-Host "Enter The New Password" -AsSecureString)
 ```
 
 # ## Force password change at logon
@@ -100,7 +100,7 @@ Set-ADUser -Identity "username" -LogonWorkstations "PC1,PC2"
 
 # ## Create new domain user
 ```powershell
-New-ADUser -Name "John Smith" -SamAccountName JSmith -UserPrincipalName "jsmith@contoso.loc" -GivenName "John" -Surname "Smith" -Enabled $true -AccountPassword (Read-Host "Password" -AsSecureString)
+New-ADUser -Name "John Smith" -SamAccountName JSmith -UserPrincipalName "jsmith@contoso.loc" -GivenName "John" -Surname "Smith" -Enabled $true -AccountPassword (Read-Host "Password" -AsSecureString) -Path "CN=Users,DC=contoso,DC=loc" -EmailAddress "jsmith@contoso.loc"
 ```
 
 # ## Get accounts trusted to authorize for delegation

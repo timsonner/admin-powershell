@@ -40,7 +40,7 @@ Get-ADGroupMember -Identity "<group name>" | Where-Object { $_.DistinguishedName
 
 ### Add user to a group
 ```powershell
-Add-ADGroupMember -Identity (Read-Host "Group") -Members (Read-Host "Username")
+Add-ADGroupMember -Identity (Read-Host "Group") -Members (Read-Host "Username") -Members (Read-Host "Username") -Members (Read-Host "Username")
 ```
 
 ### Add user to multiple groups
@@ -58,7 +58,7 @@ Remove-ADGroupMember -Identity "GroupName" -Members "UserName"
 
 ### Remove AD user from all groups
 ```powershell
-$UserName = Read-Host "Username"
+$UserName =(Read-Host "Username")
 $UserGroups = Get-ADPrincipalGroupMembership -Identity $UserName
 
 foreach ($Group in $UserGroups) {

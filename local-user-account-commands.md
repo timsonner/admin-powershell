@@ -13,7 +13,7 @@ Add-LocalGroupMember -Group "Administrators" -Member "JohnDoe"
 ```powershell
 Get-WmiObject win32_useraccount | Select domain,name,sid | findstr -i "<SID goes here>"
 ```
-#### Add user to local group
+# ### Add user to local group
 ```powershell
 Add-LocalGroupMember -Group (Read-Host "Group") -Member (Read-Host "Member")
 ```
@@ -77,29 +77,30 @@ foreach ($user in $localUsers) {
 ```
 
 ### Manage local groups
-#### Add AD group to local admins
+#### Manage local groups
+##### Add AD group to local admins
 ```powershell
 Add-LocalGroupMember -Group "Administrators" -Member "<domain>\Administrators"
 ```
 
-#### Get members of local group
+##### Get members of local group
 ```powershell
 Get-LocalGroupMember -Group (Read-Host "Group")
 ```
 
-#### Get all local groups
+##### Get all local groups
 ```powershell
 Get-LocalGroup
 ```
 
-#### Get group description
+##### Get group description
 ```powershell
 Get-LocalGroup -Group (Read-Host "Group")
 ```
 
-#### Get group membership of local user
+##### Get group membership of local user
 ```powershell
-$locuser = Read-Host "Username"
+$locuser = (Read-Host "Username")
 $hostname = $env:COMPUTERNAME
 Get-LocalGroup | ForEach-Object {
     $groupName = $_.Name
@@ -119,17 +120,17 @@ Get-LocalGroup | ForEach-Object {
 }
 ```
 
-#### Get SID based on group name
+##### Get SID based on group name
 ```powershell
 Get-CimInstance Win32_GroupAccount -Filter (Read-Host "Group") | Select-Object Name, SID
 ```
 
-#### Get local admins
+##### Get local admins
 ```powershell
 Get-LocalGroupMember Administrators | Select-Object Name, PrincipalSource | Where-Object { $_.PrincipalSource -eq "Local" }
 ```
 
-#### Get all members of the local Administrators group (long way)
+##### Get all members of the local Administrators group (long way)
 ```powershell
 $adminGroup = [ADSI]"WinNT://./Administrators,group"
 $adminMembers = @()

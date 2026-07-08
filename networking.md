@@ -60,19 +60,19 @@ while ($true) {
 
 Get SPF TXT record of domain
 ```powershell
-$domain =Read-Host "Domain"
+$domain =(Read-Host "Domain")
 Resolve-DnsName -Name $domain -Type TXT
 ```
 
 Get DMARC TXT record of domain
 ```powershell
-$domain =Read-Host "Domain"
+$domain =(Read-Host "Domain")
 Resolve-DnsName -Name "_dmarc.$domain" -Type TXT
 ```
 
 Get DKIM TXT record of domain
 ```powershell
-$domain =Read-Host "Domain"
+$domain =(Read-Host "Domain")
 $dkimDomain = "selector1._domainkey.$domain"
 
 try {

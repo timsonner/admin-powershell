@@ -65,7 +65,7 @@ Get-EventLog -LogName Application -EntryType Error,Warning -Newest 50 | Format-L
 
 ### Query Security log based on username and event ID
 ```powershell
-$account =Read-Host "Username"
+$account = (Read-Host "Username")
 $events = Get-EventLog -LogName Security -InstanceId 4740 |
     Where-Object { $_.Message -match $account }
 
@@ -79,7 +79,7 @@ $events | ForEach-Object {
 
 ### Query Security log of DC for events based on username and event ID
 ```powershell
-$account =Read-Host "Username"
+$account = (Read-Host "Username")
 $dcs = Get-ADDomainController -Filter * | Select-Object -ExpandProperty HostName
 
 foreach ($dc in $dcs) {
@@ -99,7 +99,7 @@ foreach ($dc in $dcs) {
 
 ### Search all logs for username
 ```powershell
-$account =Read-Host "Username"
+$account = (Read-Host "Username")
 $logs = Get-WinEvent -ListLog *
 
 foreach ($log in $logs) {
@@ -118,7 +118,7 @@ foreach ($log in $logs) {
 ```powershell
 $logName = "Security"
 # $logName = "Quickpass Events"
-$account =Read-Host "Username"
+$account = (Read-Host "Username")
 
 Write-Output "Searching in log: $logName..."
 
