@@ -16,4 +16,3 @@ if (Test-Path $MappedDrivesKey) {
     Write-Host "No mapped drives found for SID $UserSID"
 }
 ```
-

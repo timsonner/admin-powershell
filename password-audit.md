@@ -27,7 +27,7 @@ Get-ADUser -Filter * -Properties SamAccountName, LastLogonDate, PasswordLastSet,
     Select-Object SamAccountName, PasswordLastSet |
     Sort-Object PasswordLastSet
 
-# Name                    SamAccountName       Created                PasswordLastSet        
+# Name                    SamAccountName       Created                PasswordLastSet
 # ----                    --------------       -------                ---------------
 ```
 
@@ -40,17 +40,17 @@ Get-ADUser -Filter * -Properties SamAccountName, PasswordLastSet, Enabled, Passw
     Select-Object SamAccountName, PasswordLastSet, PasswordNeverExpires |
     Sort-Object PasswordLastSet
 
-# SamAccountName       PasswordLastSet       PasswordNeverExpires 
+# SamAccountName       PasswordLastSet       PasswordNeverExpires
 # --------------       ---------------       --------------------
 ```
 
 ### Find users that havent reset password
 ```powershell
 $users = Get-ADUser -Filter * -Properties SamAccountName, pwdLastSet, Enabled, PasswordNeverExpires |
-    Where-Object { 
-        $_.Enabled -eq $true -and 
-        $_.PasswordNeverExpires -eq $false -and 
-        $_.pwdLastSet -eq 0 
+    Where-Object {
+        $_.Enabled -eq $true -and
+        $_.PasswordNeverExpires -eq $false -and
+        $_.pwdLastSet -eq 0
     } |
     Select-Object -ExpandProperty SamAccountName |
     Sort-Object
@@ -60,7 +60,7 @@ $users = Get-ADUser -Filter * -Properties SamAccountName, pwdLastSet, Enabled, P
 $Days = 90
 $DateThreshold = (Get-Date).AddDays(-$Days)
 
-# change this logic for different searches:
+# Change this logic for different searches:
 $users = Get-ADUser -Filter * -Properties SamAccountName, PasswordLastSet, Enabled, PasswordNeverExpires |
     Where-Object { $_.Enabled -eq $true -and $_.PasswordNeverExpires -eq $false -and $_.PasswordLastSet -lt $DateThreshold } |
     Select-Object -ExpandProperty SamAccountName |

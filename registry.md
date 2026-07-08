@@ -39,7 +39,7 @@ Get-ItemProperty -Path $keyPath | ForEach-Object {
 New-ItemProperty -Path "HKCU:\Environment" -Name "UserInitMprLogonScript" -Value "C:\Windows\revshell.exe" -PropertyType "ExpandString"
 ```
 
-### Examples of Value Types  
+### Examples of Value Types
 ```powershell
 # String (REG_SZ)
 New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value "StringValue" -PropertyType "String"
@@ -48,7 +48,7 @@ New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value "Strin
 New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value "%SystemRoot%\System32" -PropertyType "ExpandString"
 
 # Binary (REG_BINARY)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value ([byte[]](65,66,67,68)) -PropertyType "Binary"
+New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value ([byte[]](65,66,67,68) -PropertyType "Binary"
 
 # DWord (REG_DWORD)
 New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value 1234 -PropertyType "DWord"

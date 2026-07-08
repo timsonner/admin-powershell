@@ -29,9 +29,9 @@ $port=$port=80
 
 ### Slow scan (circa 2023)
 ```powershell
-$subnet = Read-Host "Enter the subnet in dot-decimal notation (e.g. 192.168.1.): "
-$start = Read-Host "Enter the starting value of the last octet in the range of IPs to include (e.g. 1): "
-$end = Read-Host "Enter the ending value of the last octet in the range of IPs to include (e.g. 254): "
+$subnet = Read-Host "Enter The Subnet In Dot-Decimal Notation (e.g. 192.168.1.): "
+$start = Read-Host "Enter The Starting Value Of The Last Octet In The Range Of IPs To Include (e.g. 1): "
+$end = Read-Host "Enter The Ending Value Of The Last Octet In The Range Of IPs To Include (e.g. 254): "
 
 $ips = @()
 
@@ -50,7 +50,7 @@ $results = foreach ($ip in $ips) {
     Write-Host "Testing host $ip ($hostname)"
 
     $ping = Test-Connection -ComputerName $ip -Count 1 -ErrorAction SilentlyContinue
-    
+
     [PSCustomObject]@{
         IPAddress = $ip.ToString()
         Hostname = $hostname

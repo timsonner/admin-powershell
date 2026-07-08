@@ -1,29 +1,29 @@
 ### Get Windows event
 ```powershell
-Get-WinEvent -FilterHashtable @{LogName='Security';ID=4724} | 
-  Where-Object {$_.Properties[0].Value -eq "<USERNAME>"} | 
-  ForEach-Object { 
-    $_ | Select-Object * 
+Get-WinEvent -FilterHashtable @{LogName='Security';ID=4724} |
+  Where-Object {$_.Properties[0].Value -eq "<USERNAME>"} |
+  ForEach-Object {
+    $_ | Select-Object *
   }
 ```
 
-### Get security related events  
+### Get security related events
 ```powershell
 Get-WinEvent -LogName Security -FilterXPath "*[System[(EventID=4728 or EventID=4729 or EventID=4732 or EventID=4733 or EventID=4756 or EventID=4757)]]" | Format-List -Property *
 ```
 
-### Export event logs (.evtx format) to .txt  
+### Export event logs (.evtx format) to .txt
 ```powershell
 Get-WinEvent -Path "C:\temp\system.evtx" | Format-Table -AutoSize | Out-String -Width 4096 | Out-File "C:\temp\eventlog.txt"
 ```
 
-### Get security event based on username  
+### Get security event based on username
 ```powershell
 Get-ADObject -Filter { ObjectSID -eq (Read-Host "SID") } -Properties Name,ObjectClass
 
 Get-ADComputer -Filter * | ForEach-Object {
     $computer = $_.Name
-    $session = quser /server:$computer 2>$null | Where-Object { $_ -match (Read-Host "Username") }
+    $session = quser /server:$computer 2>$null | Where-Object { $_ -match(Read-Host "Username")}
     if ($session) {
         Write-Output "$computer - $session"
     }
@@ -37,15 +37,13 @@ Get-EventLog -LogName Security -InstanceId 4624 | Where-Object { $_.Message -mat
 
 ### Get last logon of user
 ```powershell
-Get-ADComputer -Filter * | ForEach-Object {
-    Get-ADUser -Filter {SamAccountName -eq (Read-Host "Username")} -Properties LastLogon | 
-    Select-Object Name, LastLogon
-}
+Get-ADUser -Filter {SamAccountName -eq (Read-Host "Username")} -Properties LastLogon |
+Select-Object Name, LastLogon
 ```
 
 ### Get last logon of user and timestamp
 ```powershell
-Get-ADUser -Filter {SamAccountName -eq (Read-Host "Username")} -Properties LastLogon | 
+Get-ADUser -Filter {SamAccountName -eq (Read-Host "Username")} -Properties LastLogon |
 Select-Object Name, @{Name="LastLogon"; Expression={[DateTime]::FromFileTime($_.LastLogon)}}
 ```
 
@@ -67,8 +65,8 @@ Get-EventLog -LogName Application -EntryType Error,Warning -Newest 50 | Format-L
 
 ### Query Security log based on username and event ID
 ```powershell
-$account = (Read-Host "username")
-$events = Get-EventLog -LogName Security -InstanceId 4740 | 
+$account =Read-Host "Username"
+$events = Get-EventLog -LogName Security -InstanceId 4740 |
     Where-Object { $_.Message -match $account }
 
 $events | ForEach-Object {
@@ -81,12 +79,12 @@ $events | ForEach-Object {
 
 ### Query Security log of DC for events based on username and event ID
 ```powershell
-$account = Read-Host "Username"
+$account =Read-Host "Username"
 $dcs = Get-ADDomainController -Filter * | Select-Object -ExpandProperty HostName
 
 foreach ($dc in $dcs) {
     Write-Output "Checking failed logon attempts on $dc..."
-    
+
     Invoke-Command -ComputerName $dc -ScriptBlock {
         param ($account)
         Get-WinEvent -LogName Security -FilterHashtable @{ID=4625} |
@@ -101,7 +99,7 @@ foreach ($dc in $dcs) {
 
 ### Search all logs for username
 ```powershell
-$account = Read-Host "Username"
+$account =Read-Host "Username"
 $logs = Get-WinEvent -ListLog *
 
 foreach ($log in $logs) {
@@ -120,7 +118,7 @@ foreach ($log in $logs) {
 ```powershell
 $logName = "Security"
 # $logName = "Quickpass Events"
-$account = Read-Host "Username"
+$account =Read-Host "Username"
 
 Write-Output "Searching in log: $logName..."
 
@@ -150,7 +148,7 @@ $lockoutEvents | Select @{Name = "LockedUser"; Expression = {$_.Properties[0].Va
                         @{Name = "SourceComputer"; Expression = {$_.Properties[1].Value}}, `
                         @{Name = "DomainController"; Expression = {$_.Properties[4].Value}}, TimeCreated
 
-#  4771 (Kerberos Authentication) or event ID 4776 (NTLM authentication) before the event ID 4740 
+#  4771 (Kerberos Authentication) or event ID 4776 (NTLM authentication) before the event ID 4740
 ```
 
 ### Get events by using an XPath
@@ -185,8 +183,8 @@ foreach ($event in $lockoutEvents) {
 ```powershell
 $LogonEvents = Get-WinEvent -FilterHashtable @{
     LogName = 'Security'
-    ID = 4624  
-} -MaxEvents 10  
+    ID = 4624
+} -MaxEvents 10
 
 foreach ($event in $LogonEvents) {
     $event.Message

@@ -10,7 +10,7 @@ Start-Service -Name wuauserv;Start-Service -Name bits;Start-Service -Name cryptS
 Remove-Item -Path "C:\Users\*\AppData\Local\Temp\*" -Recurse -Force
 ```
 
-### Clear Teams cache  
-```  
+### Clear Teams cache
+```
 C:\Users\<user>\appdata\local\Packages\MSTeams_*\LocalCache> rm *
-```  
+```

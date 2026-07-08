@@ -13,12 +13,12 @@ Get interface properties
 Get-NetAdapter | Select-Object -Property Name, InterfaceDescription, Status
 ```
 
-Get Network Connection Profile (get the index here)  
+Get Network Connection Profile (get the index here)
 ```powershell
 Get-NetConnectionProfile
 ```
 
-Set network connection profile to private  
+Set network connection profile to private
 ```powershell
 Set-NetConnectionProfile -InterfaceIndex <Index goes here> -NetworkCategory Private
 ```
@@ -30,11 +30,11 @@ Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter -Name 'Ethernet' | Se
 
 Set primary and secondary DNS
 ```powershell
- Get-NetAdapter  
- Set-DnsClientServerAddress -InterfaceIndex <Interface Number> -ServerAddresses ("1.1.1.1","9.9.9.9")  
+ Get-NetAdapter
+ Set-DnsClientServerAddress -InterfaceIndex <Interface Number> -ServerAddresses ("1.1.1.1","9.9.9.9")
  ```
 
- ### Resolve DMARC, DKIM, and SPF
+ # ## Resolve DMARC, DKIM, and SPF
 ```powershell
 # DMARC
 Resolve-DnsName -Type TXT _dmarc.contoso.com
@@ -49,7 +49,7 @@ Resolve-DnsName -Type TXT selector1._domainkey.contoso.com
 Resolve-DnsName -Type TXT selector1._domainkey.contoso.com
 ```
 
-### While loop every 5 min
+# ## While loop every 5 min
 ```powershell
 while ($true) {
     Resolve-DnsName -Type TXT contoso.com | Where-Object { $_.Strings -match "v=spf1" }
@@ -60,19 +60,19 @@ while ($true) {
 
 Get SPF TXT record of domain
 ```powershell
-$domain = Read-Host "Domain"
+$domain =Read-Host "Domain"
 Resolve-DnsName -Name $domain -Type TXT
 ```
 
 Get DMARC TXT record of domain
 ```powershell
-$domain = Read-Host "Domain"
+$domain =Read-Host "Domain"
 Resolve-DnsName -Name "_dmarc.$domain" -Type TXT
 ```
 
 Get DKIM TXT record of domain
 ```powershell
-$domain = Read-Host "Domain"
+$domain =Read-Host "Domain"
 $dkimDomain = "selector1._domainkey.$domain"
 
 try {
@@ -94,7 +94,7 @@ try {
 }
 ```
 
-### Make request and view site
+# ## Make request and view site
 ```powershell
 $response = Invoke-WebRequest -Uri "https://192.168.1.5" -UseBasicParsing
 $response.Content

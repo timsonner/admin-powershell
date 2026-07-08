@@ -18,9 +18,9 @@ Get-ADGroup -Identity "GroupName" | Format-List
 Get-ADGroupMember -Identity "Domain Admins" -Recursive | Select-Object Name, SamAccountName
 ```
 
-### Get members of a group 
+### Get members of a group
 ```powershell
-Get-ADGroupMember -Filter { Name -like "Some group" } 
+Get-ADGroupMember -Filter { Name -like "Some group" }
 ```
 
 ### List all groups in a specific Organizational Unit (OU)
@@ -38,7 +38,7 @@ Get-ADGroup -Filter { GroupCategory -eq "Security" -and GroupScope -eq "Global" 
 Get-ADGroupMember -Identity "<group name>" | Where-Object { $_.DistinguishedName -like "*<user name>*" }
 ```
 
-### Add user to a group  
+### Add user to a group
 ```powershell
 Add-ADGroupMember -Identity (Read-Host "Group") -Members (Read-Host "Username")
 ```
@@ -69,12 +69,12 @@ foreach ($Group in $UserGroups) {
 ### Get group membership of a user
 ```powershell
 Get-ADUser -Identity (Read-Host "Username") -Properties MemberOf | Select-Object -ExpandProperty MemberOf
-```  
+```
 
-### Get group access control permissions  
-```powershell  
+### Get group access control permissions
+```powershell
 $groupDN = "LDAP://CN=ContosoOwners,OU=Distribution Groups,OU=MyBusiness,DC=ContosoDomain,DC=local"
 $directoryEntry = New-Object System.DirectoryServices.DirectoryEntry($groupDN)
 $acl = $directoryEntry.ObjectSecurity.Access
 $acl | Select-Object IdentityReference, AccessControlType, ActiveDirectoryRights
-```  
+```

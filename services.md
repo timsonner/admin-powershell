@@ -25,7 +25,7 @@ $services = @(
 
 foreach ($svc in $services) {
     Set-Service -Name $svc -StartupType Disabled
-    #Stop-Service $svc -Force
+    # Stop-Service $svc -Force
 }
 ```
 

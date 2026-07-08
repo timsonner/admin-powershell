@@ -18,19 +18,19 @@ Get-PnpDevice -PresentOnly | Where-Object {$_.Class -eq 'Printer' -and $_.Instan
 
 ### Install printer driver
 ```powershell
-Add-PrinterDriver -Name "Canon Generic Plus UFR II" 
+Add-PrinterDriver -Name "Canon Generic Plus UFR II"
 ```
 
 ### Add printer
 ```powershell
-Add-PrinterPort -Name (Read-Host "Printer port") -PrinterHostAddress (Read-Host "Printer IP")
+Add-PrinterPort -Name (Read-Host "Printer Port") -PrinterHostAddress (Read-Host "Printer IP")
 
-Add-Printer -Name (Read-Host "Printer name") -PortName "(Read-Host "Printer port") -DriverName (Read-Host "Driver name")
+Add-Printer -Name (Read-Host "Printer Name") -PortName (Read-Host "Printer Port") -DriverName (Read-Host "Driver Name")
 ```
 
-### Print 
+### Print
 ```powershell
-(Read-Host "Message to print") | Out-Printer -Name (Read-Host "Printer")
+(Read-Host "Message To Print") | Out-Printer -Name (Read-Host "Printer")
 ```
 
 ### List shared printers

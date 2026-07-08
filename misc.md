@@ -3,12 +3,12 @@
 Start-Process -Verb RunAs
 ```
 
-### Temporary ExecutionPolicy bypass  
+### Temporary ExecutionPolicy bypass
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 ```
 
-### Load local Dll  
+### Load local Dll
 ```powershell
 $currentDir = Get-Location
 $bytes = [IO.File]::ReadAllBytes("$currentDir\payload.dll")
@@ -19,26 +19,26 @@ $instance.RunO()
 
 ### Spawn process from PsExec
 ```powershell
-Start-Process -FilePath "powershell" -ArgumentList "-WindowStyle Hidden -Command Start-Process -NoNewWindow 'c:\tools\pstools\psexec64.exe' '-i -s -accepteula $(Read-Host "Elevated")'"                                                                                                                          
+Start-Process -FilePath "powershell" -ArgumentList "-WindowStyle Hidden -Command Start-Process -NoNewWindow 'c:\tools\pstools\psexec64.exe' '-i -s -accepteula $(Read-Host "Elevated")'"
 ```
 
-### Download Edge (Windows Server)  
+### Download Edge (Windows Server)
 ```powershell
 Invoke-WebRequest -Uri "https://c2rsetup.officeapps.live.com/c2r/downloadEdge.aspx?platform=Default&source=EdgeStablePage&Channel=Stable&language=en&brand=M100"
 ```
 
 ### Download SPICE Guest Tools
-```powershell  
+```powershell
 Invoke-WebRequest -Uri "https://spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe"
 ```
 
-### Get cmdlets available from Module  
+### Get cmdlets available from Module
 ```powershell
 Get-Command -Module ActiveDirectory | findstr -i group
 ```
 
 ### Get help with specific command
-```powershell  
+```powershell
 Get-Help Add-ADGroupMember
 ```
 ### Set domain password policy
@@ -51,51 +51,51 @@ Set-ADDefaultDomainPasswordPolicy -identity contoso.local -MinPasswordAge 0
 Get-Process | Sort-Object -Descending WS | Select-Object -First 10 | Format-Table -Property Name, WS, ID
 ```
 
-### Find command (basic)  
-```powershell  
+### Find command (basic)
+```powershell
 Get-Command notepad.exe
-```  
+```
 
-### Find command (search entire drive)  
+### Find command (search entire drive)
 ```powershell
 Get-ChildItem -Path C:\ -Filter chrome.exe -Recurse -ErrorAction SilentlyContinue -Force
-```  
+```
 
 ### Verify SMB v1.0 status
-```powershell  
+```powershell
 Get-WindowsOptionalFeature -Online -FeatureName "SMB1Protocol"
 ```
 
-### Enable SMB v1.0  
+### Enable SMB v1.0
 ```powershell
 Enable-WindowsOptionalFeature -Online -FeatureName "SMB1Protocol" -NoRestart
 ```
 
 ### Get file hash
-```powershell  
+```powershell
 Get-FileHash -Path "C:\<path to>\some.exe" -Algorithm MD5
 ```
 
-### Get Startup programs   
+### Get Startup programs
 ```powershell
-Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location, User  
+Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location, User
 ```
 
-### Add startup program  
-```powershell  
+### Add startup program
+```powershell
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "Application" -Value "C:\<path to>\some.exe"
 
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "Application" -Value "C:\<path to>\some.exe"
-```  
+```
 
 ### 0x0.st - Linux version
 ```bash
 foo > file.txt && curl -F 'file=@file.txt' http://0x0.st
-```  
+```
 
 ### Rename PC:
 ```powershell
-$credential = New-Object System.Management.Automation.PSCredential((Read-Host "Domain admin username"), (Read-Host -Prompt "Domain admin password" -AsSecureString))
+$credential = New-Object System.Management.Automation.PSCredential((Read-Host "Domain Admin Username"), (Read-Host "Domain Admin Password" -AsSecureString))
 
 Rename-Computer -NewName (Read-Host "New Hostname") -DomainCredential $credential
 $credential = $null
@@ -103,7 +103,7 @@ $credential = $null
 
 ### Invoke command on server
 ```powershell
-Invoke-Command -ComputerName <Hostname> -Credential <Domain\user> 
+Invoke-Command -ComputerName <Hostname> -Credential <Domain\user>
 ```
 
 ### Create PowerShell session on server
@@ -132,7 +132,7 @@ $FolderACL.Access | Format-Table IdentityReference, FileSystemRights
     Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ClipSVC\"
 ```
 
-### Windows key from Registry - Windows 10  
+### Windows key from Registry - Windows 10
  ```powershell
     Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform"
 ```
@@ -142,7 +142,7 @@ $FolderACL.Access | Format-Table IdentityReference, FileSystemRights
 Get-Process -Id 11076 | Select-Object -ExpandProperty Path
 ```
 
-### AD Sync  
+### AD Sync
 ```powershell
 Start-ADSyncSyncCycle -PolicyType delta
 ```
