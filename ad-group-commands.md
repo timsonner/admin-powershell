@@ -58,7 +58,7 @@ Remove-ADGroupMember -Identity "GroupName" -Members "UserName"
 
 ### Remove AD user from all groups
 ```powershell
-$UserName =(Read-Host "Username")
+$UserName = (Read-Host "Username")
 $UserGroups = Get-ADPrincipalGroupMembership -Identity $UserName
 
 foreach ($Group in $UserGroups) {
