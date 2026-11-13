@@ -1,17 +1,20 @@
 ### Query individual OU
 ```powershell
-Get-ADOrganizationalUnit -Filter {Name -eq (Reah-Host "OU")}
+$ouName = Read-Host "OU"
+Get-ADOrganizationalUnit -Filter "Name -eq '$ouName'"
 ```
 
 ### Query based on base OU
 ```powershell
-Get-ADObject -Filter * -SearchBase "OU=SomeOrgUnit,DC=Contoso,DC=com"   
+$searchBase = Read-Host "Search base"
+Get-ADObject -Filter * -SearchBase $searchBase
 ```
 
 ### Find disabled users OU
 ```powershell
+$searchBase = Read-Host "Search base"
 Get-ADDomainController
-Get-ADObject -Filter * -SearchBase "DC=corp,DC=foo,DC=com" | findstr -i disabled
+Get-ADObject -Filter * -SearchBase $searchBase | findstr -i disabled
 ```
 
 ### Get all computer objects on domain
@@ -36,8 +39,8 @@ Get-ADOrganizationalUnit -Filter * | Select-Object Name, DistinguishedName
 
 ### Enumerate computers as domain admin
 ```powershell
-# Create a DirectoryEntry object
-$directoryEntry = New-Object System.DirectoryServices.DirectoryEntry("LDAP://<Domain Controller Goes Here>")
+$domainController = Read-Host "Domain controller"
+$directoryEntry = New-Object System.DirectoryServices.DirectoryEntry("LDAP://$domainController")
 
 # Create a DirectorySearcher object
 $searcher = New-Object System.DirectoryServices.DirectorySearcher($directoryEntry)

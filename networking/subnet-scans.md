@@ -1,7 +1,8 @@
 ### Scan for web servers
 ```powershell
+$prefix = Read-Host "IPv4 prefix, including the trailing dot"
 1..254 | ForEach-Object {
-    $ip = "192.168.10.$_"
+    $ip = "$prefix$_"
     try {
         $response = Invoke-WebRequest -Uri "https://$ip" -UseBasicParsing -TimeoutSec 5
         if ($response.StatusCode -eq 200) {
@@ -15,9 +16,10 @@
 
 ### Check for open port
 ```powershell
-$port=$port=80
+$port = [int](Read-Host "Port")
+$prefix = Read-Host "IPv4 prefix, including the trailing dot"
 1..254 | ForEach-Object {
-    $ip = "192.168.3.$_"
+    $ip = "$prefix$_"
     try {
         $tcp = Test-NetConnection -ComputerName $ip -Port $port -WarningAction SilentlyContinue
         if ($tcp.TcpTestSucceeded) {
@@ -29,9 +31,9 @@ $port=$port=80
 
 ### Slow scan (circa 2023)
 ```powershell
-$subnet = Read-Host "Enter the subnet in dot-decimal notation (e.g. 192.168.1.): "
-$start = Read-Host "Enter the starting value of the last octet in the range of IPs to include (e.g. 1): "
-$end = Read-Host "Enter the ending value of the last octet in the range of IPs to include (e.g. 254): "
+$subnet = Read-Host "IPv4 prefix, including the trailing dot"
+$start = Read-Host "Starting value of the last octet"
+$end = Read-Host "Ending value of the last octet"
 
 $ips = @()
 
@@ -50,7 +52,7 @@ $results = foreach ($ip in $ips) {
     Write-Host "Testing host $ip ($hostname)"
 
     $ping = Test-Connection -ComputerName $ip -Count 1 -ErrorAction SilentlyContinue
-    
+
     [PSCustomObject]@{
         IPAddress = $ip.ToString()
         Hostname = $hostname
@@ -62,7 +64,7 @@ $results | Format-Table -AutoSize
 
 ### Find hosts running WinRM
 ```powershell
-$baseIP = "x.x.x."
+$baseIP = Read-Host "IPv4 prefix, including the trailing dot"
 $startHostNumber = 1
 $endHostNumber = 254
 

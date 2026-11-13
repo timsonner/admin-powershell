@@ -1,8 +1,8 @@
 ### Get mapped drives of user
 ```powershell
-$UserSID = "CHANGE_ME"
+$UserSID = Read-Host "User SID"
 
-$MappedDrivesKey = "HKCU:\$UserSID\Network"
+$MappedDrivesKey = "Registry::HKEY_USERS\$UserSID\Network"
 
 if (Test-Path $MappedDrivesKey) {
     Get-ChildItem -Path $MappedDrivesKey | ForEach-Object {
@@ -16,4 +16,3 @@ if (Test-Path $MappedDrivesKey) {
     Write-Host "No mapped drives found for SID $UserSID"
 }
 ```
-

@@ -39,26 +39,28 @@ Get-ItemProperty -Path $keyPath | ForEach-Object {
 New-ItemProperty -Path "HKCU:\Environment" -Name "UserInitMprLogonScript" -Value "C:\Windows\revshell.exe" -PropertyType "ExpandString"
 ```
 
-### Examples of Value Types  
+### Examples of Value Types
 ```powershell
+$keyPath = Read-Host "Registry key path"
+
 # String (REG_SZ)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value "StringValue" -PropertyType "String"
+New-ItemProperty -Path $keyPath -Name "MyValue" -Value "StringValue" -PropertyType "String"
 
 # ExpandString (REG_EXPAND_SZ)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value "%SystemRoot%\System32" -PropertyType "ExpandString"
+New-ItemProperty -Path $keyPath -Name "MyValue" -Value "%SystemRoot%\System32" -PropertyType "ExpandString"
 
 # Binary (REG_BINARY)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value ([byte[]](65,66,67,68)) -PropertyType "Binary"
+New-ItemProperty -Path $keyPath -Name "MyValue" -Value ([byte[]](65,66,67,68)) -PropertyType "Binary"
 
 # DWord (REG_DWORD)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value 1234 -PropertyType "DWord"
+New-ItemProperty -Path $keyPath -Name "MyValue" -Value 1234 -PropertyType "DWord"
 
 # MultiString (REG_MULTI_SZ)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value @("String1","String2") -PropertyType "MultiString"
+New-ItemProperty -Path $keyPath -Name "MyValue" -Value @("String1","String2") -PropertyType "MultiString"
 
 # QWord (REG_QWORD)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value 123456789012345 -PropertyType "QWord"
+New-ItemProperty -Path $keyPath -Name "MyValue" -Value 123456789012345 -PropertyType "QWord"
 
 # Unknown (REG_NONE)
-New-ItemProperty -Path "HKLM:\Path\To\RegistryKey" -Name "MyValue" -Value 0 -PropertyType "Unknown"
+New-ItemProperty -Path $keyPath -Name "MyValue" -Value 0 -PropertyType "Unknown"
 ```

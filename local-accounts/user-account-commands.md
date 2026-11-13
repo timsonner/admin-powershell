@@ -3,41 +3,43 @@
 New-LocalUser -Name (Read-Host "Username") -Password (Read-Host "Password" -AsSecureString)
 ```
 
-### Add local user to group  
+### Add local user to group
 ```powershell
-Add-LocalGroupMember -Group "Administrators" -Member "JohnDoe"
+Add-LocalGroupMember -Group "Administrators" -Member (Read-Host "Member")
 ```
 
-### Add AD group to local admins  
+### Add AD group to local admins
 ```powershell
-Add-LocalGroupMember -Group "Administrators" -Member "<domain>\Administrators"
+Add-LocalGroupMember -Group "Administrators" -Member (Read-Host "Member")
 ```
 
-### Get account info by SID locally  
-```powershell 
-Get-WmiObject win32_useraccount | Select domain,name,sid | findstr -i "<SID goes here>"
+### Get account info by SID locally
+```powershell
+$sid = Read-Host "SID"
+Get-WmiObject win32_useraccount | Select-Object domain, name, sid | findstr -i $sid
 ```
-### Add user to local group  
+
+### Add user to local group
 ```powershell
 Add-LocalGroupMember -Group (Read-Host "Group") -Member (Read-Host "Member")
-```  
+```
 
-### Get members of local group  
+### Get members of local group
 ```powershell
-Get-LocalGroupMember -Group (Read-Host "Group")  
-```  
+Get-LocalGroupMember -Group (Read-Host "Group")
+```
 
-### Get all local groups  
+### Get all local groups
 ```powershell
 Get-LocalGroup
-```  
+```
 
-### Get group description  
+### Get group description
 ```powershell
-Get-LocalGroup -Group (Read-Host "Group")
-```  
+Get-LocalGroup -Name (Read-Host "Group")
+```
 
-### Get group membership of local user  
+### Get group membership of local user
 ```powershell
 $locuser = (Read-Host "Username")
 $hostname = $env:COMPUTERNAME
@@ -57,54 +59,58 @@ Get-LocalGroup | ForEach-Object {
         }
     }
 }
-```  
+```
 
 ### Get SID and other info of local user
 ```powershell
-Get-Localuser (Read-Host "Username") | Select-Object *
-```  
+Get-LocalUser (Read-Host "Username") | Select-Object *
+```
 
 ### Create local user account
 ```powershell
 New-LocalUser -Name (Read-Host "Username") -Password (Read-Host -AsSecureString "Password") -FullName (Read-Host "Full Name") -Description (Read-Host "User Description")
-```  
+```
 
 ### Get disabled local accounts
 ```powershell
 Get-LocalUser | Where-Object { $_.Enabled -eq $false }
-```  
+```
 
-### Set password for local user  
+### Set password for local user
 ```powershell
 Set-LocalUser -Name (Read-Host "Username") -Password (Read-Host -AsSecureString "Password")
-```  
+```
 
 ### Enable account of local user
 ```powershell
 Enable-LocalUser -Name (Read-Host "Username")
-```  
+```
 
-### Remove local user  
+### Remove local user
 ```powershell
-$sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object { $_.Name -eq "johnm" }).SID
+$username = Read-Host "Username"
+$profilePath = Read-Host "Profile path"
+$sid = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object { $_.Name -eq $username }).SID
 reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\$sid" /f
-Remove-Item -Path "C:\Users\johns" -Recurse -Force
+Remove-Item -Path $profilePath -Recurse -Force
 ```
 
 ### Get SID based on username
 ```powershell
-Get-CimInstance Win32_UserAccount -Filter Read-Host ("Username") | Select-Object Name, SID
+$name = Read-Host "Username"
+Get-CimInstance Win32_UserAccount -Filter "Name='$name'" | Select-Object Name, SID
 ```
 
 ### Get SID based on group name
 ```powershell
-Get-CimInstance Win32_GroupAccount -Filter Read-Host ("Group") | Select-Object Name, SID
+$name = Read-Host "Group"
+Get-CimInstance Win32_Group -Filter "Name='$name'" | Select-Object Name, SID
 ```
 
 ### Get all local users
 ```powershell
 Get-LocalUser
-```  
+```
 
 ### Get local users (long way)
 ```powershell

@@ -5,14 +5,11 @@ Get-Service | Where-Object { $_.Status -eq 'Running' } | Select-Object Status, N
 
 ### Disable service
 ```powershell
-Set-Service -Name "Spooler" -StartupType Disabled
+Set-Service -Name (Read-Host "Service name") -StartupType Disabled
 ```
 
 ### Disable multiple services
 ```powershell
-
-#     "DellClientManagementService",
-
 $services = @(
     "DDVCollectorSvcApi",
     "DDVDataCollector",
@@ -37,8 +34,8 @@ Get-Service | Select-Object Name, DisplayName, Status, StartType, ServiceType | 
 Get-Service | Select-Object Name, DisplayName, Status, StartType, ServiceType | ConvertTo-Html | Out-File ".\services.html"
 ```
 
-### Get services of remote host... must have WinRM protocol enabled.
+### Get services of remote host. WinRM must be enabled.
 ```powershell
 $credential = Get-Credential
-Invoke-Command -ComputerName <HostnameGoesHere> -Credential $credential -ScriptBlock { Get-Service } | Select-Object Name, DisplayName, Status, StartType, ServiceType | Export-Csv -Path ".\services.csv" -NoTypeInformation
+Invoke-Command -ComputerName (Read-Host "Computer name") -Credential $credential -ScriptBlock { Get-Service } | Select-Object Name, DisplayName, Status, StartType, ServiceType | Export-Csv -Path ".\services.csv" -NoTypeInformation
 ```

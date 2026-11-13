@@ -1,6 +1,6 @@
 ### Get signer cert
 ```powershell
-Get-AuthenticodeSignature -FilePath .\explorer.exe
+Get-AuthenticodeSignature -FilePath (Read-Host "File path")
 ```
 
 ### Export cert from binary

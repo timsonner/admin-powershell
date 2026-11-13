@@ -1,20 +1,19 @@
-Get license status of user
+### Get license status of user
 ```powershell
 Install-Module MSOnline -Scope CurrentUser
 Connect-MsolService
-Get-MsolUser -UserPrincipalName bill@contoso.com | Select-Object -Property isLicensed
+Get-MsolUser -UserPrincipalName (Read-Host "User principal name") | Select-Object -Property isLicensed
 ```
 
-Get user info
+### Get user info
 ```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser
-Connect-Graph
-Get-MgUser -UserId bill@contoso.com | Select-Object -Property *
+Connect-MgGraph
+Get-MgUser -UserId (Read-Host "User id") | Select-Object -Property *
 ```
 
-Install AZ module using elevated credentials
+### Install AZ module using elevated credentials
 ```powershell
 $credential = Get-Credential
-$command = "Install-Module -Name Az -Repository PSGallery -Force"
-Start-Process -FilePath $command -Credential $credential
+Start-Process -FilePath "powershell.exe" -Credential $credential -ArgumentList "-NoProfile","-Command","Install-Module -Name Az -Repository PSGallery -Force"
 ```

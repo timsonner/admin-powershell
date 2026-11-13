@@ -1,6 +1,6 @@
 ### Get all AD users and filter by PasswordLastSet date
 ```powershell
-$Days = 90
+$Days = [int](Read-Host "Password age in days")
 $thresholdDate = (Get-Date).AddDays(-$Days)
 
 Get-ADUser -Filter * -Properties PasswordLastSet | Where-Object {
@@ -8,9 +8,9 @@ Get-ADUser -Filter * -Properties PasswordLastSet | Where-Object {
 } | Select-Object Name, SamAccountName, PasswordLastSet | Format-Table -AutoSize
 ```
 
-### Find accounts with passwords older than 90 days
+### Find accounts with passwords older than the given number of days
 ```powershell
-$Days = 90
+$Days = [int](Read-Host "Password age in days")
 $DateThreshold = (Get-Date).AddDays(-$Days)
 Get-ADUser -Filter * -Properties SamAccountName, LastLogonDate, PasswordLastSet, Enabled |
     Where-Object { $_.Enabled -eq $true -and $_.PasswordLastSet -lt $DateThreshold } |
@@ -18,46 +18,41 @@ Get-ADUser -Filter * -Properties SamAccountName, LastLogonDate, PasswordLastSet,
     Sort-Object PasswordLastSet
 ```
 
-### Find account with default creds. Find accounts with passwords older than 90 days where created date and last set date are the same
+### Find enabled accounts with passwords older than the given number of days
 ```powershell
-$Days = 90
+$Days = [int](Read-Host "Password age in days")
 $DateThreshold = (Get-Date).AddDays(-$Days)
 Get-ADUser -Filter * -Properties SamAccountName, LastLogonDate, PasswordLastSet, Enabled |
     Where-Object { $_.Enabled -eq $true -and $_.PasswordLastSet -lt $DateThreshold } |
     Select-Object SamAccountName, PasswordLastSet |
     Sort-Object PasswordLastSet
-
-# Name                    SamAccountName       Created                PasswordLastSet        
-# ----                    --------------       -------                ---------------
 ```
 
-### Find non-service accounts with creds older than 90 days
+### Find non-service accounts with passwords older than the given number of days
 ```powershell
-$Days = 90
+$Days = [int](Read-Host "Password age in days")
 $DateThreshold = (Get-Date).AddDays(-$Days)
 Get-ADUser -Filter * -Properties SamAccountName, PasswordLastSet, Enabled, PasswordNeverExpires |
     Where-Object { $_.Enabled -eq $true -and $_.PasswordNeverExpires -eq $false -and $_.PasswordLastSet -lt $DateThreshold } |
     Select-Object SamAccountName, PasswordLastSet, PasswordNeverExpires |
     Sort-Object PasswordLastSet
-
-# SamAccountName       PasswordLastSet       PasswordNeverExpires 
-# --------------       ---------------       --------------------
 ```
 
-### Find users that havent reset password
+### Find users that have not reset their password
 ```powershell
 $users = Get-ADUser -Filter * -Properties SamAccountName, pwdLastSet, Enabled, PasswordNeverExpires |
-    Where-Object { 
-        $_.Enabled -eq $true -and 
-        $_.PasswordNeverExpires -eq $false -and 
-        $_.pwdLastSet -eq 0 
+    Where-Object {
+        $_.Enabled -eq $true -and
+        $_.PasswordNeverExpires -eq $false -and
+        $_.pwdLastSet -eq 0
     } |
     Select-Object -ExpandProperty SamAccountName |
     Sort-Object
 ```
+
 ### Create array of usernames based on search criteria
 ```powershell
-$Days = 90
+$Days = [int](Read-Host "Password age in days")
 $DateThreshold = (Get-Date).AddDays(-$Days)
 
 # change this logic for different searches:
@@ -68,20 +63,14 @@ $users = Get-ADUser -Filter * -Properties SamAccountName, PasswordLastSet, Enabl
 
 $usersList = $users | ForEach-Object { "`"$_`"" }
 
-$usersListString = "users = @(" + [String]::Join(",`r`n", $usersList) + ")"
+$usersListString = "`$users = @(" + [String]::Join(",`r`n", $usersList) + ")"
 
 $usersListString
-
-# $usersListString example: @("user1","user2")
 ```
 
-### Force reset on array of usernames
+### Force reset on a list of usernames
 ```powershell
-users = @(
-"user1",
-"user2",
-"user3"
-)
+$users = (Read-Host "Usernames (comma separated)") -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ }
 
 foreach ($user in $users) {
     try {

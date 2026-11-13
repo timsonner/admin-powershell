@@ -1,4 +1,4 @@
-### Get Top CPU-Consuming Processes  
+### Get Top CPU-Consuming Processes
 ```powershell
 Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 -Property Id, ProcessName, CPU
 ```
@@ -8,7 +8,7 @@ Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 -Property Id
 Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10 -Property Id, ProcessName, WorkingSet
 ```
 
-### Get system uptime  
+### Get system uptime
 ```powershell
 (Get-Date) - (gcim Win32_OperatingSystem).LastBootUpTime
 ```
@@ -30,8 +30,8 @@ Get-WmiObject Win32_Processor | Select-Object DeviceID, @{Name="CPU Load (%)";Ex
 
 ### Performance Counters (with Enhanced Formatting)
 ```powershell
-Get-Counter -Counter "\Processor(_Total)\% Processor Time", "\Memory\Available MBytes", "\System\Context Switches/sec" | 
-    Select-Object -ExpandProperty CounterSamples | 
+Get-Counter -Counter "\Processor(_Total)\% Processor Time", "\Memory\Available MBytes", "\System\Context Switches/sec" |
+    Select-Object -ExpandProperty CounterSamples |
     Format-Table -Property Path, @{Name="Value";Expression={
         if ($_.Path -like "*\Memory\Available MBytes") {
             "{0:N2} MB" -f $_.CookedValue
@@ -43,12 +43,12 @@ Get-Counter -Counter "\Processor(_Total)\% Processor Time", "\Memory\Available M
     }} -AutoSize
 ```
 
-### Working set memory usage  
+### Working set memory usage
 ```powershell
-Get-Process | 
-    Sort-Object WS -Descending | 
-    Select-Object -First 10 Name, 
-        @{Name="Working Set (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}}, 
-        @{Name="CPU Time (Sec)";Expression={[math]::Round($_.CPU, 2)}} | 
+Get-Process |
+    Sort-Object WS -Descending |
+    Select-Object -First 10 Name,
+        @{Name="Working Set (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}},
+        @{Name="CPU Time (Sec)";Expression={[math]::Round($_.CPU, 2)}} |
     Format-Table -AutoSize
-```  
+```
